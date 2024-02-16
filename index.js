@@ -64,6 +64,33 @@ app.post("/api/users/login", async (req, res) => {
   }
 });
 
+//auto login user
+
+app.post("/api/user/verify-token",async(req,res)=>{
+  let token;
+  if(req.headers && req.headers.authorization.startsWith("Bearer ")){
+    token = req.headers.authorization.split(" ")[1]
+  } else {
+    res.status(401).json({message:"u need to sign in"})
+  }
+  try {
+
+    const decoded= jwt.verify(token,process.env.JWT_SECRET)
+    const user = await User.findById(decoded.userId)
+
+    if(user){
+      res.status(200).json(user,token)
+    } else {
+      res.status(401).json({message:"token expired"})
+    }
+  } catch (error) {
+    if (error instanceof jwt.JsonWebTokenError) {
+      return res.status(401).json({ message: "Invalid token" });
+    }
+    res.status(500)
+  }
+})
+
 // Messages route
 app.post("/api/messages", async (req, res) => {
   try {
