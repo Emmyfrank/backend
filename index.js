@@ -80,7 +80,7 @@ app.get("/api/users/:id",async(req,res)=>{
       res.status(404).json({message:"user not found or invalid user id and not deleted",})
     }
   } catch (error) {
-    res.status(200).json({message:"internal server error"})
+    res.status(500).json({message:"internal server error"},error.message)
   }
 })
 
@@ -158,7 +158,7 @@ app.get("/api/messages", async (req, res) => {
 });
 
 app.post("/api/messages/:id",async(req,res)=>{
-  const {id} = req.body
+  const {id} = req.params
 
   try {
 
