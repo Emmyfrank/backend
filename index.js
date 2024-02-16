@@ -168,6 +168,7 @@ app.delete("/api/messages/:id", async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 });
+//this
 
 // Connect to MongoDB and start the server
 mongoose.connect(process.env.MONGOSB_URL)
@@ -179,3 +180,4 @@ mongoose.connect(process.env.MONGOSB_URL)
   .catch((error) => {
     console.log(`Failed to connect to the database: ${error.message}`);
   });
+  
