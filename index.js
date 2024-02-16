@@ -33,12 +33,23 @@ app.get("/api/users",async(req,res)=>{
 
 // to registration a new user  route
 app.post("/api/users/register", async (req, res) => {
+  const { password, email, username, name } = req.body;
+
   try {
-    const newUser = new User({ ...req.body });
+    // Check if the email already exists in the database
+    const existingUser = await User.findOne({ email: email });
+    
+    if (existingUser) {
+      return res.status(401).json({ message: "Email already taken" });
+    }
+    const newUser = new User({ password, email, username, name });
+  
     await newUser.save();
-    res.status(200).json(newUser);
+    res.status(201).json(newUser);
   } catch (error) {
-    res.status(500).json(error);
+    // Handle errors
+    console.error("Error in user registration:", error);
+    res.status(500).json({ message: "Internal server error" });
   }
 });
 
