@@ -68,7 +68,7 @@ app.post("/api/users/login", async (req, res) => {
 
 app.post("/api/user/verify-token",async(req,res)=>{
   let token;
-  if(req.headers && req.headers.authorization.startsWith("Bearer ")){
+  if(req.headers.Authorization && req.headers.Authorization.startsWith("Bearer ")){
     token = req.headers.authorization.split(" ")[1]
   } else {
     res.status(401).json({message:"u need to sign in"})
