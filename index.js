@@ -1,7 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
-const jwt = require("jsonwebtoken")
+const jwt = require("jsonwebtoken");
 
 dotenv.config();
 
@@ -16,73 +16,70 @@ app.use(express.json());
 // Welcome route
 app.get("/", (req, res) => res.send("Welcome home"));
 
-//getting all users from database
-app.get("/api/users",async(req,res)=>{
+// Get all users
+app.get("/api/users", async (req, res) => {
   try {
-    const users = await User.find()
+    const users = await User.find();
 
-    if(users.length >0) {
-      res.status(200).json(users)
+    if (users.length > 0) {
+      res.status(200).json(users);
     } else {
-      res.status(404).json({messsage:"no users found in yoiur database"})
+      res.status(404).json({ message: "No users found in your database" });
     }
   } catch (error) {
-    res.status(500).json(error.message)
+    res.status(500).json({ message: error.message });
   }
-})
+});
 
-// to registration a new user  route
+// Register a new user
 app.post("/api/users/register", async (req, res) => {
   const { password, email, username, name } = req.body;
 
   try {
-    // Check if the email already exists in the database
-    const existingUser = await User.findOne({ email: email });
+    const existingUser = await User.findOne({ email });
     
     if (existingUser) {
       return res.status(401).json({ message: "Email already taken" });
     }
+
     const newUser = new User({ password, email, username, name });
-  
     await newUser.save();
     res.status(201).json(newUser);
   } catch (error) {
-    // Handle errors
     console.error("Error in user registration:", error);
     res.status(500).json({ message: "Internal server error" });
   }
 });
 
-//get single user
-
-app.get("/api/users/:id",async(req,res)=>{
-  const {id} = req.params
+// Get single user by ID
+app.get("/api/users/:id", async (req, res) => {
+  const { id } = req.params;
   try {
-    const user = await User.findById(id)
-    if(user){
-      res.status(200).json({message:"user found"},user)
+    const user = await User.findById(id);
+    if (user) {
+      res.status(200).json({ message: "User found", user });
     } else {
-      res.status(404).json({message:"user not found or invalid user id"})
+      res.status(404).json({ message: "User not found or invalid user ID" });
     }
   } catch (error) {
-    res.status(200).json({message:"internal server error"})
+    res.status(500).json({ message: "Internal server error" });
   }
-})
-//delete user
+});
 
-app.get("/api/users/:id",async(req,res)=>{
-  const {id} = req.params
+// Delete user by ID
+app.delete("/api/users/:id", async (req, res) => {
+  const { id } = req.params;
   try {
-    const user = await User.findByIdAndDelete(id)
-    if(user){
-      res.status(200).json({message:"user found and succafuly deleted"},user)
+    const deletedUser = await User.findByIdAndDelete(id);
+    if (deletedUser) {
+      res.status(200).json({ message: "User found and successfully deleted", deletedUser });
     } else {
-      res.status(404).json({message:"user not found or invalid user id and not deleted",})
+      res.status(404).json({ message: "User not found or invalid user ID and not deleted" });
     }
   } catch (error) {
-    res.status(200).json({message:"internal server error"})
+    res.status(500).json({ message: "Internal server error" });
   }
-})
+});
 
 // User login route
 app.post("/api/users/login", async (req, res) => {
@@ -98,94 +95,87 @@ app.post("/api/users/login", async (req, res) => {
       return res.status(401).json({ message: "Invalid password" });
     }
 
-    const token=jwt.sign({userId:user._id},process.env.JWT_SECRET,{expiresIn:"30d"})
+    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: "30d" });
 
-    res.status(200).json({ message: "Login successful", user,token });
+    res.status(200).json({ message: "Login successful", user, token });
   } catch (error) {
-    res.status(500).json(error);
+    res.status(500).json({ message: "Internal server error" });
   }
 });
 
-//auto login user
-
-app.post("/api/user/verify-token",async(req,res)=>{
+// Auto-login user route
+app.post("/api/user/verify-token", async (req, res) => {
   let token;
-  if(req.headers.Authorization && req.headers.Authorization.startsWith("Bearer ")){
-    token = req.headers.authorization.split(" ")[1]
+  if (req.headers.authorization && req.headers.authorization.startsWith("Bearer ")) {
+    token = req.headers.authorization.split(" ")[1];
   } else {
-    res.status(401).json({message:"u need to sign in"})
+    return res.status(401).json({ message: "You need to sign in" });
   }
+
   try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const user = await User.findById(decoded.userId);
 
-    const decoded= jwt.verify(token,process.env.JWT_SECRET)
-    const user = await User.findById(decoded.userId)
-
-    if(user){
-      res.status(200).json(user,token)
+    if (user) {
+      res.status(200).json({ message: "Token verification successful", user });
     } else {
-      res.status(401).json({message:"token expired"})
+      res.status(401).json({ message: "Token expired" });
     }
   } catch (error) {
     if (error instanceof jwt.JsonWebTokenError) {
       return res.status(401).json({ message: "Invalid token" });
     }
-    res.status(500)
+    res.status(500).json({ message: "Internal server error" });
   }
-})
+});
 
-// Messages route
+// Create a new message
 app.post("/api/messages", async (req, res) => {
   try {
     const newMessage = new Mess({ ...req.body });
     await newMessage.save();
     res.status(201).json(newMessage);
   } catch (error) {
-    res.status(500).json(error);
+    res.status(500).json({ message: "Internal server error" });
   }
 });
+
+// Get all messages
 app.get("/api/messages", async (req, res) => {
   try {
     const allMessages = await Mess.find();
-    if(allMessages.length>0){
-
-      res.status(201).json(allMessages);
+    if (allMessages.length > 0) {
+      res.status(200).json(allMessages);
     } else {
-      res.status(404).json({message:"no message found in databse"})
+      res.status(404).json({ message: "No messages found in database" });
     }
   } catch (error) {
-    res.status(500).json(error);
+    res.status(500).json({ message: "Internal server error" });
   }
 });
 
-app.post("/api/messages/:id",async(req,res)=>{
-  const {id} = req.body
-
+// Delete a message by ID
+app.delete("/api/messages/:id", async (req, res) => {
+  const { id } = req.params;
   try {
-
-    const deletedMessage= await Mess.findByIdAndDelete(id)
-
-    if(deletedMessage){
-      res.status(200).json({message:"succesfuly deleted this message"},deletedMessage)
+    const deletedMessage = await Mess.findByIdAndDelete(id);
+    if (deletedMessage) {
+      res.status(200).json({ message: "Message found and successfully deleted", deletedMessage });
     } else {
-      res.status(404).json({message:"message not found or invalid message id"})
+      res.status(404).json({ message: "Message not found or invalid message ID and not deleted" });
     }
-    
   } catch (error) {
-    res.status(500)
+    res.status(500).json({ message: "Internal server error" });
   }
-})
-
+});
 
 // Connect to MongoDB and start the server
-mongoose
-  .connect(process.env.MONGOSB_URL)
+mongoose.connect(process.env.MONGOSB_URL)
   .then(() => {
-    app.listen(process.env.PORT, () =>
-      console.log(
-        `Successfully connected to the database, and the server is running on port ${process.env.PORT}`
-      )
-    );
+    app.listen(process.env.PORT, () => {
+      console.log(`Successfully connected to the database, and the server is running on port ${process.env.PORT}`);
+    });
   })
   .catch((error) => {
-    console.log(`Failed to connect to the database: `, error.message);
+    console.log(`Failed to connect to the database: ${error.message}`);
   });
