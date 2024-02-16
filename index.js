@@ -53,6 +53,37 @@ app.post("/api/users/register", async (req, res) => {
   }
 });
 
+//get single user
+
+app.get("/api/users/:id",async(req,res)=>{
+  const {id} = req.params
+  try {
+    const user = await User.findById(id)
+    if(user){
+      res.status(200).json({message:"user found"},user)
+    } else {
+      res.status(404).json({message:"user not found or invalid user id"})
+    }
+  } catch (error) {
+    res.status(200).json({message:"internal server error"})
+  }
+})
+//delete user
+
+app.get("/api/users/:id",async(req,res)=>{
+  const {id} = req.params
+  try {
+    const user = await User.findByIdAndDelete(id)
+    if(user){
+      res.status(200).json({message:"user found and succafuly deleted"},user)
+    } else {
+      res.status(404).json({message:"user not found or invalid user id and not deleted",})
+    }
+  } catch (error) {
+    res.status(200).json({message:"internal server error"})
+  }
+})
+
 // User login route
 app.post("/api/users/login", async (req, res) => {
   try {
@@ -112,6 +143,38 @@ app.post("/api/messages", async (req, res) => {
     res.status(500).json(error);
   }
 });
+app.get("/api/messages", async (req, res) => {
+  try {
+    const allMessages = await Mess.find();
+    if(allMessages.length>0){
+
+      res.status(201).json(allMessages);
+    } else {
+      res.status(404).json({message:"no message found in databse"})
+    }
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+
+app.post("/api/messages/:id",async(req,res)=>{
+  const {id} = req.body
+
+  try {
+
+    const deletedMessage= await Mess.findByIdAndDelete(id)
+
+    if(deletedMessage){
+      res.status(200).json({message:"succesfuly deleted this message"},deletedMessage)
+    } else {
+      res.status(404).json({message:"message not found or invalid message id"})
+    }
+    
+  } catch (error) {
+    res.status(500)
+  }
+})
+
 
 // Connect to MongoDB and start the server
 mongoose
