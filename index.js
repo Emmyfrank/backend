@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
+const jwt = require("jsonwebtoken")
 
 dotenv.config();
 
@@ -15,6 +16,7 @@ app.use(express.json());
 // Welcome route
 app.get("/", (req, res) => res.send("Welcome home"));
 
+//getting all users from database
 app.get("/api/users",async(req,res)=>{
   try {
     const users = await User.find()
@@ -29,7 +31,7 @@ app.get("/api/users",async(req,res)=>{
   }
 })
 
-// User registration route
+// to registration a new user  route
 app.post("/api/users/register", async (req, res) => {
   try {
     const newUser = new User({ ...req.body });
@@ -54,7 +56,9 @@ app.post("/api/users/login", async (req, res) => {
       return res.status(401).json({ message: "Invalid password" });
     }
 
-    res.status(200).json({ message: "Login successful", user });
+    const token=jwt.sign({userId:user._id},process.env.JWT_SECRET,{expiresIn:"30d"})
+
+    res.status(200).json({ message: "Login successful", user,token });
   } catch (error) {
     res.status(500).json(error);
   }
