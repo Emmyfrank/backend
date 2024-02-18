@@ -222,7 +222,7 @@ app.get("/api/messages", async (req, res) => {
 app.get("/api/messages/:id", async (req, res) => {
   const { id } = req.params;
   try {
-    const message = await Comment.findById(id);
+    const message = await Mess.findById(id);
     if (message) {
       res.status(200).json({ message: "Message found", message });
     } else {
