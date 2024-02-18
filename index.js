@@ -219,7 +219,7 @@ app.get("/api/messages", async (req, res) => {
 
 // get single message
 
-app.get("/api/messagess/:id", async (req, res) => {
+app.get("/api/messages/:id", async (req, res) => {
   const { id } = req.params;
   try {
     const message = await Comment.findById(id);
