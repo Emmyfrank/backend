@@ -64,19 +64,21 @@ app.get("/", (req, res) => res.send("Welcome home"));
 
 
 
-// sendend a message
-app.post("/api/comments/sentComment" , async (req, res)=>{
-  const {name, comment} = req.body;
-  try {
-     res.status(401).json({message:"comment has sent succesfuf"});
-    const newComment = new comment({name, comment});
-    await newComment.save();
-    res.status(201).json(newComment);
-  } catch (error) {
-    console.error("no comment provided:", error);
-    res.status(500).json({ message: "Internal server error" }); 
-  }
-});
+// // sendend a comment
+// app.post("/api/comments/creatComment" , async (req, res)=>{
+//   const {name, comment} = req.body;
+//   try {
+//      res.status(401).json({message:"comment has sent succesfuf"});
+//     const newComment = new comment({name, comment});
+//     await newComment.save();
+//     res.status(201).json(newComment);
+//   } catch (error) {
+//     console.error("no comment provided:", error);
+//     res.status(500).json({ message: "Internal server error" }); 
+//   }
+// });
+
+// comment section ends here
 
 // Get all users
 app.get("/api/users", async (req, res) => {
