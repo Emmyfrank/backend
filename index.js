@@ -17,66 +17,48 @@ app.use(express.json());
 // Welcome route
 app.get("/", (req, res) => res.send("Welcome home"));
 
-// // get all comments
-// app.get("/api/comments", async (req, res)=>{
-//   try {
-//     const comments = await comment.find();
-//     if(comments.length > 0){
-//       res.status(200).json(comments);
-//     }
-//     else{
-//       res.status(404).json({message: "no comments founds in database"})
-//     }
-//   } catch (error) {
-//     res.status(500).json({message: error.message});
-//   }
-// });
+// comment section starts here
 
-// // get single comment by Id
-// app.get("/api/comments/:id", async (req, res) => {
-//   const { id } = req.params;
-//   try {
-//     const comment = await Comment.findById(id);
-//     if (comment) {
-//       res.status(200).json({ message: "Comment found", comment });
-//     } else {
-//       res.status(404).json({ message: "Message not found or invalid user ID" });
-//     }
-//   } catch (error) {
-//     res.status(500).json({ message: "Internal server error" });
-//   }
-// });
+// Create a new comment
+app.post("/api/comments", async (req, res) => {
+  try {
+    const newComment = new Comment({ ...req.body });
+    await newComment.save();
+    res.status(201).json(newComment);
+  } catch (error) {
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
 
-// // Delete comment by ID
-// app.delete("/api/comments/:id", async (req, res) => {
-//   const { id } = req.params;
-//   try {
-//     const deletedComment = await Comment.findByIdAndDelete(id);
-//     if (deletedComment) {
-//       res.status(200).json({ message: "Comment found and successfully deleted", deletedUser });
-//     } else {
-//       res.status(404).json({ message: "Comment not found or invalid user ID and not deleted" });
-//     }
-//   } catch (error) {
-//     res.status(500).json({ message: "Internal server error" });
-//   }
-// });
+// Get all comment
+app.get("/api/comments", async (req, res) => {
+  try {
+    const allComments = await Comment.find();
+    if (allComments.length > 0) {
+      res.status(200).json(allComments);
+    } else {
+      res.status(404).json({ message: "No Comment found in database" });
+    }
+  } catch (error) {
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
 
+// Delete a comment by ID
+app.delete("/api/comments/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const deletedComment = await Comment.findByIdAndDelete(id);
+    if (deletedComment) {
+      res.status(200).json({ message: "Comment found and successfully deleted", deletedComment });
+    } else {
+      res.status(404).json({ message: "Comment not found or invalid message ID and not deleted" });
+    }
+  } catch (error) {
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
 
-
-// // sendend a comment
-// app.post("/api/comments/creatComment" , async (req, res)=>{
-//   const {name, comment} = req.body;
-//   try {
-//      res.status(401).json({message:"comment has sent succesfuf"});
-//     const newComment = new comment({name, comment});
-//     await newComment.save();
-//     res.status(201).json(newComment);
-//   } catch (error) {
-//     console.error("no comment provided:", error);
-//     res.status(500).json({ message: "Internal server error" }); 
-//   }
-// });
 
 // comment section ends here
 
