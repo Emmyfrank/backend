@@ -9,7 +9,7 @@ const app = express();
 
 const Mess = require("./model/messageModel");
 const User = require("./model/userModel");
-const comment = require("./model/commentModel");
+const Comment = require("./model/commentModel");
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
