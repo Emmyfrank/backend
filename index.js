@@ -10,6 +10,7 @@ const app = express();
 const Mess = require("./model/messageModel");
 const User = require("./model/userModel");
 const Comment = require("./model/commentModel");
+const Article = require("./model/articleModel");
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -17,7 +18,61 @@ app.use(express.json());
 // Welcome route
 app.get("/", (req, res) => res.send("Welcome home"));
 
-// comment section starts here
+//creat new article
+app.post("/api/articles", async (req, res) => {
+  try {
+    const newArticle = new Article({ ...req.body });
+    await newArticle.save();
+    res.status(201).json(newArticle);
+  } catch (error) {
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+// get all articles
+app.get("/api/articles", async (req, res) => {
+  try {
+    const allArticles = await Article.find();
+    if (allArticles.length > 0) {
+      res.status(200).json(allArticles);
+    } else {
+      res.status(404).json({ message: "No Article found in database" });
+    }
+  } catch (error) {
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+//get a single article
+app.get("/api/articles/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const article = await Article.findById(id);
+    if (article) {
+      res.status(200).json({ message: "Article found", article });
+    } else {
+      res.status(404).json({ message: "Article not found or invalid user ID" });
+    }
+  } catch (error) {
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+//delete single article
+
+app.delete("/api/articles/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const deletedArticle = await Article.findByIdAndDelete(id);
+    if (deletedArticle) {
+      res.status(200).json({ message: "Article found and successfully deleted", deletedArticle });
+    } else {
+      res.status(404).json({ message: "Article not found or invalid message ID and not deleted" });
+    }
+  } catch (error) {
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
 
 // Create a new comment
 app.post("/api/comments", async (req, res) => {
