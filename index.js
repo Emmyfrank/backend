@@ -6,7 +6,7 @@ const jwt = require("jsonwebtoken");
 dotenv.config();
 
 const app = express();
- 
+
 const Mess = require("./model/messageModel");
 const User = require("./model/userModel");
 const Comment = require("./model/commentModel");
@@ -24,22 +24,22 @@ app.post("/api/comments", async (req, res) => {
   try {
     const newComment = new Comment({ ...req.body });
     await newComment.save();
-    res.status(201).json({
-      Status: "Success",
-      Data: newComment});
+    res.status(201).json(newComment);
   } catch (error) {
     res.status(500).json({ message: "Internal server error" });
   }
 });
 
-// Get all comment
+// Get all comments
 app.get("/api/comments", async (req, res) => {
   try {
     const allComments = await Comment.find();
     if (allComments.length > 0) {
       res.status(200).json(
-        {Status: "success",
-        Date: allComments});
+        {
+          status: "Success",
+      data:{
+          comments:allComments}});
     } else {
       res.status(404).json({ message: "No Comment found in database" });
     }
