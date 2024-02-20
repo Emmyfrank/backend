@@ -24,7 +24,9 @@ app.post("/api/comments", async (req, res) => {
   try {
     const newComment = new Comment({ ...req.body });
     await newComment.save();
-    res.status(201).json(newComment);
+    res.status(201).json({
+      Status: "Success",
+      Data: newComment});
   } catch (error) {
     res.status(500).json({ message: "Internal server error" });
   }
