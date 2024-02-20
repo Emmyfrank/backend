@@ -30,16 +30,12 @@ app.post("/api/comments", async (req, res) => {
   }
 });
 
-// Get all comments
+// Get all comment
 app.get("/api/comments", async (req, res) => {
   try {
     const allComments = await Comment.find();
     if (allComments.length > 0) {
-      res.status(200).json(
-        {
-          status: "Success",
-      data:{
-          comments:allComments}});
+      res.status(200).json(allComments);
     } else {
       res.status(404).json({ message: "No Comment found in database" });
     }
