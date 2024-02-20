@@ -6,7 +6,7 @@ const jwt = require("jsonwebtoken");
 dotenv.config();
 
 const app = express();
-
+ 
 const Mess = require("./model/messageModel");
 const User = require("./model/userModel");
 const Comment = require("./model/commentModel");
@@ -35,7 +35,10 @@ app.get("/api/comments", async (req, res) => {
   try {
     const allComments = await Comment.find();
     if (allComments.length > 0) {
-      res.status(200).json(allComments);
+      res.status(200).json({
+        status:"success",
+        data:allComments
+      });
     } else {
       res.status(404).json({ message: "No Comment found in database" });
     }
@@ -133,7 +136,7 @@ app.get("/api/users/:id", async (req, res) => {
 app.delete("/api/users/:id", async (req, res) => {
   const { id } = req.params;
   try {
-    const deletedUser = await User.findByIdAndDelete(id);
+    const deletedUser = await User.findByIdAndDelete(id);find
     if (deletedUser) {
       res.status(200).json({ message: "User found and successfully deleted", deletedUser });
     } else {
