@@ -5,3 +5,8 @@
 node_modules/
 /dist
 dist
+
+pnpm-lock.yaml
+
+# ignore test coverage
+coverage
