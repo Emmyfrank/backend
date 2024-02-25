@@ -21,7 +21,7 @@ export const getAllMessages = async (req:Request, res:Response) => {
     try {
       const newMessage = new Mess({ ...req.body });
       const saved = await newMessage.save();
-      return res.status(201).json(saved);
+      return res.status(201).json({message:"success",data:saved});
     } catch (error) {
         console.error(error);
       return res.status(500).json({ message: "Internal server error" });

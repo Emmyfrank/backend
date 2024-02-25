@@ -2,6 +2,7 @@ import express, { Request, Response } from "express";
 import router from "./routes";
 import morgan from "morgan";
 import docrouter from "./documentation";
+import notFound from "./controllers/notFount";
 
 const app = express();
 
@@ -17,6 +18,9 @@ app.use('/api/v1', router);
 
 // documentation route
 app.use('/docs', docrouter);
+// will handle all routes that do not exist
+router.all("*", notFound);
+
 
 
   export default app;

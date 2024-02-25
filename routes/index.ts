@@ -16,7 +16,5 @@ router.use('/users', userRouter);
 // messages routes
 router.use('/messages', messageRouter);
 
-// will handle all routes that do not exist
-router.all("*", notFound);
 
 export default router;
