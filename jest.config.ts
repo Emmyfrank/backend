@@ -3,7 +3,7 @@
  * https://jestjs.io/docs/configuration
  */
 
-import type {Config} from 'jest';
+import type { Config } from "jest";
 
 const config: Config = {
   // All imported modules in your tests should be mocked automatically
@@ -16,7 +16,7 @@ const config: Config = {
   // cacheDirectory: "C:\\Users\\user\\AppData\\Local\\Temp\\jest",
 
   // Automatically clear mock calls, instances, contexts and results before every test
-  clearMocks: true,
+  // clearMocks: true,
 
   // Indicates whether the coverage information should be collected while executing the test
   collectCoverage: true,
@@ -120,7 +120,7 @@ const config: Config = {
   // resolver: undefined,
 
   // Automatically restore mock state and implementation before every test
-  // restoreMocks: false,
+  restoreMocks: true,
 
   // The root directory that Jest should scan for tests and modules within
   // rootDir: undefined,
@@ -156,7 +156,7 @@ const config: Config = {
 
   // The glob patterns Jest uses to detect test files
   testMatch: [
-    "**/__tests__/**/*.jest.ts"
+    "**/__tests__/**/*.test.ts",
     // "**/?(*.)+(spec|test).[tj]s?(x)"
   ],
 
@@ -164,7 +164,7 @@ const config: Config = {
   testPathIgnorePatterns: [
     "\\\\node_modules\\\\",
     "\\\\cavarage\\\\",
-    "\\\\.env\\\\"
+    "\\\\.env\\\\",
   ],
 
   // The regexp pattern or array of patterns that Jest uses to detect test files

@@ -7,6 +7,7 @@ import {
   registerUser,
 } from "../../controllers/user";
 import isLoggedIn from "../../middlewares/checkIsLoggedIn";
+import validateRegister, { validateLogin } from "../../validations/user";
 
 const userRouter = Router();
 
@@ -14,7 +15,7 @@ const userRouter = Router();
 userRouter.get("/", isLoggedIn, getAllUsers);
 
 // Register a new user
-userRouter.post("/register", registerUser);
+userRouter.post("/register", validateRegister, registerUser);
 
 // Get single user by ID
 userRouter.get("/:id", isLoggedIn, getSingleUser);
@@ -23,6 +24,6 @@ userRouter.get("/:id", isLoggedIn, getSingleUser);
 userRouter.delete("/:id", isLoggedIn, deleteUser);
 
 // User login route
-userRouter.post("/login", loginUser);
+userRouter.post("/login", validateLogin, loginUser);
 
 export default userRouter;

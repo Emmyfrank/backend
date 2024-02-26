@@ -9,4 +9,6 @@ const articleSchema = new Schema({
     description: String,
 });
 
-module.exports = mongoose.model("Article", articleSchema);
+const Article = mongoose.model("Article", articleSchema);
+
+export default Article;

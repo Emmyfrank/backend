@@ -18,8 +18,9 @@ app.use('/api/v1', router);
 
 // documentation route
 app.use('/docs', docrouter);
+
 // will handle all routes that do not exist
-router.all("*", notFound);
+app.all("*", notFound);
 
 
 

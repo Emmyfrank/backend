@@ -1,13 +1,14 @@
 import { Router } from "express";
 import { createMessage, deleteMessage, getAllMessages, getSingleMessage } from "../../controllers/message";
 import isLoggedIn from "../../middlewares/checkIsLoggedIn";
+import validateMessage from "../../validations/message";
 
 
 const messageRouter = Router();
 
 
 // Create a new message
-messageRouter.post("/", createMessage);
+messageRouter.post("/", validateMessage, createMessage);
   
   // Get all messages
   messageRouter.get("/", isLoggedIn, getAllMessages);

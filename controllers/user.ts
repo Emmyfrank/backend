@@ -26,7 +26,7 @@ export const getAllUsers = async (req:Request, res:Response) => {
       const existingUser = await User.findOne({ email });
       
       if (existingUser) {
-        return res.status(401).json({ message: "Email already taken" });
+        return res.status(409).json({ message: "Email already taken" });
       }
   
       const newUser = new User({ password, email, username, name });
