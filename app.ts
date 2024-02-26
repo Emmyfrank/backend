@@ -17,7 +17,7 @@ app.get("/", (req:Request, res:Response) => res.send("Welcome home"));
 app.use('/api/v1', router);
 
 // documentation route
-app.use('api/v1/docs', docrouter);
+app.use('/docs', docrouter);
 
 // will handle all routes that do not exist
 app.all("*", notFound);
