@@ -12,7 +12,7 @@ export const getAllUsers = async (req:Request, res:Response) => {
     } else {
       return res.status(404).json({ message: "No users found in your database" });
     }
-  } catch (error) {
+  } catch (error:any) {
     console.error(error);
     return res.status(500).json({ message: error.message });
   }
