@@ -17,7 +17,7 @@ const options = {
       url: host,
     },
     {
-      url: "https://backend-mu-mauve.vercel.app/api/v1/",
+      url: "https://backend-mu-mauve.vercel.app/",
     },
 
   ],
