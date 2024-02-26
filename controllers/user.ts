@@ -12,7 +12,7 @@ export const getAllUsers = async (req:Request, res:Response) => {
     } else {
       return res.status(404).json({ message: "No users found in your database" });
     }
-  } catch (error: any) {
+  } catch (error) {
     console.error(error);
     return res.status(500).json({ message: error.message });
   }
@@ -64,7 +64,7 @@ export const getAllUsers = async (req:Request, res:Response) => {
         } else {
           return res.status(404).json({ message: "User not found or invalid user ID and not deleted" });
         }
-      } catch (error) {
+      } catch (error:any) {
         console.error(error);
         return res.status(500).json({ message: "Internal server error" });
       }
@@ -89,6 +89,6 @@ export const getAllUsers = async (req:Request, res:Response) => {
         res.status(200).json({ message: "Login successful", user, token });
       } catch (error) {
         console.error(error);
-        res.status(500).json({ message: "Internal server error" });
+        res.status(500).json({ message: "Internal server error",error:`${error}`});
       }
     };
