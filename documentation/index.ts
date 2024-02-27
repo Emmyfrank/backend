@@ -14,10 +14,10 @@ const options = {
   },
   servers: [
     {
-      url: "https://backend-mu-mauve.vercel.app/",
+      url: host,
     },
     {
-      url: host,
+      url: "https://backend-mu-mauve.vercel.app/",
     },
 
   ],
