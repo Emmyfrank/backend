@@ -1,4 +1,4 @@
-name: Node.js CI
+name: Node.js CI with Code Coverage
 
 on:
   push:
@@ -28,5 +28,11 @@ jobs:
     - name: Install dependencies
       run: npm install
 
-    - name: Run tests
-      run: npm test
+    - name: Run tests with coverage
+      run: |
+        npm test -- --coverage
+
+    - name: Upload coverage report to Codecov
+      uses: codecov/codecov-action@v2
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}  # Make sure to add CODECOV_TOKEN as a secret in your repository settings
