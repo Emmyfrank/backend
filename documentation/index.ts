@@ -6,7 +6,7 @@ const docrouter = Router();
 dotenv.config();
 const host = `http://localhost:${process.env.PORT}`;
 const options = {
-  openapi: "3.0.1",
+  openapi: "3.1.0",
   info: {
     title: "BACKEND",
     version: "1.0.0",
@@ -520,4 +520,7 @@ const options = {
   },
 };
 docrouter.use("/", serve, setup(options));
-export default docrouter;
+
+
+export const swaggerRoute =  docrouter; // Export Swagger Router
+export const swaggerOptions = options; // export Swagger Options
