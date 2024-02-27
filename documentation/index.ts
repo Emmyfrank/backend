@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 
 const docrouter = Router();
 dotenv.config();
-const host = `http://localhost:${process.env.PORT}`;
+const host = `https://backend-mu-mauve.vercel.app/:${process.env.PORT}`;
 const options = {
   openapi: "3.0.1",
   info: {
