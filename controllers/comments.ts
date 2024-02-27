@@ -10,7 +10,7 @@ const createComment = async (req:Request, res:Response) => {
         {status: "success",
       date: newComment});
     } catch (error) {
-        console.error(error);
+        console.log(error);
       return res.status(500).json({ message: "Internal server error" });
     }
   };
@@ -25,7 +25,7 @@ const createComment = async (req:Request, res:Response) => {
         return res.status(404).json({ message: "No Comment found in database" });
       }
     } catch (error) {
-        console.error(error);      
+        console.log(error);      
       return res.status(500).json({ message: "Internal server error" });
     }
   };
@@ -41,7 +41,7 @@ const createComment = async (req:Request, res:Response) => {
         return res.status(404).json({ message: "Comment not found or invalid user ID" });
         }
     } catch (error) {
-        console.error(error);
+        console.log(error);
         return res.status(500).json({ message: "Internal server error" });
     }
     };

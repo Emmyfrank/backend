@@ -10,7 +10,7 @@ const createArticle = async (req:Request, res:Response) => {
         {status: "success",
       date: saved});
     } catch (error) {
-        console.error(error);
+        console.log(error);
       return res.status(500).json({ message: "Internal server error" });
     }
   };
@@ -25,7 +25,7 @@ const createArticle = async (req:Request, res:Response) => {
         return res.status(404).json({ message: "No article found" });
       }
     } catch (error) {
-        console.error(error);      
+        console.log(error);      
       return res.status(500).json({ message: "Internal server error" });
     }
   };
@@ -41,7 +41,7 @@ const createArticle = async (req:Request, res:Response) => {
         return res.status(404).json({ message: "Article not found or invalid article ID" });
         }
     } catch (error) {
-        console.error(error);
+        console.log(error);
         return res.status(500).json({ message: "Internal server error" });
     }
     };

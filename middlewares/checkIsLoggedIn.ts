@@ -23,7 +23,7 @@ export default async function isLoggedIn(req: Request, res: Response, next: Next
         }
       });
     } catch (error) {
-        console.error(error);
+        console.log(error);
       return res.status(500).json({ message: "Internal server error" });
     }
 }

@@ -11,7 +11,7 @@ export const getAllMessages = async (req:Request, res:Response) => {
       return res.status(404).json({ message: "No messages found in database" });
     }
   } catch (error) {
-      console.error(error);
+      console.log(error);
     return res.status(500).json({ message: "Internal server error" });
   }
 };
@@ -23,7 +23,7 @@ export const getAllMessages = async (req:Request, res:Response) => {
       const saved = await newMessage.save();
       return res.status(201).json({message:"success",data:saved});
     } catch (error) {
-        console.error(error);
+        console.log(error);
       return res.status(500).json({ message: "Internal server error" });
     }
   };
@@ -39,7 +39,7 @@ export const getAllMessages = async (req:Request, res:Response) => {
         return res.status(404).json({ message: "Message not found or invalid user ID" });
       }
     } catch (error) {
-        console.error(error);
+        console.log(error);
       return res.status(500).json({ message: "Internal server error" });
     }
   };
@@ -55,7 +55,7 @@ export const getAllMessages = async (req:Request, res:Response) => {
           return res.status(404).json({ message: "Message not found or invalid message ID and not deleted" });
         }
       } catch (error) {
-          console.error(error);
+          console.log(error);
         return res.status(500).json({ message: "Internal server error" });
       }
     };
