@@ -17,7 +17,7 @@ const options = {
       url: host,
     },
     {
-      url: "https://backend-mu-mauve.vercel.app/",
+      url: "https://backend-ctov.onrender.com/",
     },
 
   ],
