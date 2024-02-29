@@ -20,7 +20,7 @@ const createComment = async (req:Request, res:Response) => {
     try {
       const allComments = await Comment.find();
       if (allComments.length > 0) {
-        return res.status(200).json(allComments);
+        return res.status(200).json({status: "success", data: allComments});
       } else {
         return res.status(404).json({ message: "No Comment found in database" });
       }
@@ -36,7 +36,7 @@ const createComment = async (req:Request, res:Response) => {
     try {
         const comment = await Comment.findById(id);
         if (comment) {
-        return res.status(200).json({ message: "Comment found", comment });
+        return res.status(200).json({ message: "Comment found", data: comment });
         } else {
         return res.status(404).json({ message: "Comment not found or invalid user ID" });
         }
@@ -52,7 +52,7 @@ const createComment = async (req:Request, res:Response) => {
         try {
           const deletedComment = await Comment.findByIdAndDelete(id);
           if (deletedComment) {
-            return res.status(200).json({ message: "Comment found and successfully deleted", deletedComment });
+            return res.status(200).json({ message: "Comment found and successfully deleted", data: deletedComment });
           } else {
             return res.status(404).json({ message: "Comment not found or invalid message ID and not deleted" });
           }

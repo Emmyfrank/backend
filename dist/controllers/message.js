@@ -19,7 +19,7 @@ const getAllMessages = (req, res) => __awaiter(void 0, void 0, void 0, function*
     try {
         const allMessages = yield messageModel_1.default.find();
         if (allMessages.length > 0) {
-            return res.status(200).json(allMessages);
+            return res.status(200).json({ message: "success", data: allMessages });
         }
         else {
             return res.status(404).json({ message: "No messages found in database" });
@@ -50,7 +50,7 @@ const getSingleMessage = (req, res) => __awaiter(void 0, void 0, void 0, functio
     try {
         const message = yield messageModel_1.default.findById(id);
         if (message) {
-            return res.status(200).json({ message: "Message found", Message: message });
+            return res.status(200).json({ message: "Message found", data: message });
         }
         else {
             return res.status(404).json({ message: "Message not found or invalid user ID" });
@@ -68,7 +68,7 @@ const deleteMessage = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     try {
         const deletedMessage = yield messageModel_1.default.findByIdAndDelete(id);
         if (deletedMessage) {
-            return res.status(200).json({ message: "Message found and successfully deleted", deletedMessage });
+            return res.status(200).json({ message: "Message found and successfully deleted", data: deletedMessage });
         }
         else {
             return res.status(404).json({ message: "Message not found or invalid message ID and not deleted" });

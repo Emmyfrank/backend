@@ -6,7 +6,7 @@ export const getAllMessages = async (req:Request, res:Response) => {
   try {
     const allMessages = await Mess.find();
     if (allMessages.length > 0) {
-      return res.status(200).json(allMessages);
+      return res.status(200).json({message:"success",data: allMessages});
     } else {
       return res.status(404).json({ message: "No messages found in database" });
     }
@@ -34,7 +34,7 @@ export const getAllMessages = async (req:Request, res:Response) => {
     try {
       const message = await Mess.findById(id);
       if (message) {
-        return res.status(200).json({ message: "Message found", Message: message });
+        return res.status(200).json({ message: "Message found", data: message });
       } else {
         return res.status(404).json({ message: "Message not found or invalid user ID" });
       }
@@ -50,7 +50,7 @@ export const getAllMessages = async (req:Request, res:Response) => {
       try {
         const deletedMessage = await Mess.findByIdAndDelete(id);
         if (deletedMessage) {
-          return res.status(200).json({ message: "Message found and successfully deleted", deletedMessage });
+          return res.status(200).json({ message: "Message found and successfully deleted", data: deletedMessage });
         } else {
           return res.status(404).json({ message: "Message not found or invalid message ID and not deleted" });
         }

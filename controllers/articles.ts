@@ -20,7 +20,7 @@ const createArticle = async (req:Request, res:Response) => {
     try {
       const allArticles = await Article.find();
       if (allArticles.length > 0) {
-        return res.status(200).json(allArticles);
+        return res.status(200).json({ststus: "success", data: allArticles});
       } else {
         return res.status(404).json({ message: "No article found" });
       }
@@ -36,7 +36,7 @@ const createArticle = async (req:Request, res:Response) => {
     try {
         const article = await Article.findById(id);
         if (article) {
-        return res.status(200).json({ message: "Article found", article });
+        return res.status(200).json({ message: "Article found",  deta:article });
         } else {
         return res.status(404).json({ message: "Article not found or invalid article ID" });
         }
@@ -52,7 +52,7 @@ const createArticle = async (req:Request, res:Response) => {
         try {
           const deletedArticle = await Article.findByIdAndDelete(id);
           if (deletedArticle) {
-            return res.status(200).json({ message: "Article found and successfully deleted", deletedArticle });
+            return res.status(200).json({ message: "Article found and successfully deleted", data: deletedArticle });
           } else {
             return res.status(404).json({ message: "Article not found or invalid message ID and not deleted" });
           }

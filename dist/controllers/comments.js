@@ -29,7 +29,7 @@ const getAllComments = (req, res) => __awaiter(void 0, void 0, void 0, function*
     try {
         const allComments = yield commentModel_1.Comment.find();
         if (allComments.length > 0) {
-            return res.status(200).json(allComments);
+            return res.status(200).json({ status: "success", data: allComments });
         }
         else {
             return res.status(404).json({ message: "No Comment found in database" });
@@ -47,7 +47,7 @@ const getSingleComment = (req, res) => __awaiter(void 0, void 0, void 0, functio
     try {
         const comment = yield commentModel_1.Comment.findById(id);
         if (comment) {
-            return res.status(200).json({ message: "Comment found", comment });
+            return res.status(200).json({ message: "Comment found", data: comment });
         }
         else {
             return res.status(404).json({ message: "Comment not found or invalid user ID" });
@@ -65,7 +65,7 @@ const deleteComment = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     try {
         const deletedComment = yield commentModel_1.Comment.findByIdAndDelete(id);
         if (deletedComment) {
-            return res.status(200).json({ message: "Comment found and successfully deleted", deletedComment });
+            return res.status(200).json({ message: "Comment found and successfully deleted", data: deletedComment });
         }
         else {
             return res.status(404).json({ message: "Comment not found or invalid message ID and not deleted" });

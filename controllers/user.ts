@@ -8,7 +8,7 @@ export const getAllUsers = async (req:Request, res:Response) => {
     const users = await User.find();
 
     if (users.length > 0) {
-      return res.status(200).json(users);
+      return res.status(200).json({message: "success",data: users});
     } else {
       return res.status(404).json({ message: "No users found in your database" });
     }
@@ -44,7 +44,7 @@ export const getAllUsers = async (req:Request, res:Response) => {
     try {
       const user = await User.findById(id);
       if (user) {
-        return res.status(200).json({ message: "User found", user });
+        return res.status(200).json({ message: "User found", data: user });
       } else {
         return res.status(404).json({ message: "User not found or invalid user ID" });
       }
@@ -60,7 +60,7 @@ export const getAllUsers = async (req:Request, res:Response) => {
       try {
         const deletedUser = await User.findByIdAndDelete(id);
         if (deletedUser) {
-          return res.status(200).json({ message: "User found and successfully deleted", deletedUser });
+          return res.status(200).json({ message: "User found and successfully deleted", data: deletedUser });
         } else {
           return res.status(404).json({ message: "User not found or invalid user ID and not deleted" });
         }

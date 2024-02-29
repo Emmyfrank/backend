@@ -32,7 +32,7 @@ const getAllArticles = (req, res) => __awaiter(void 0, void 0, void 0, function*
     try {
         const allArticles = yield articleModel_1.default.find();
         if (allArticles.length > 0) {
-            return res.status(200).json(allArticles);
+            return res.status(200).json({ ststus: "success", data: allArticles });
         }
         else {
             return res.status(404).json({ message: "No article found" });
@@ -50,7 +50,7 @@ const getSingleArticle = (req, res) => __awaiter(void 0, void 0, void 0, functio
     try {
         const article = yield articleModel_1.default.findById(id);
         if (article) {
-            return res.status(200).json({ message: "Article found", article });
+            return res.status(200).json({ message: "Article found", deta: article });
         }
         else {
             return res.status(404).json({ message: "Article not found or invalid article ID" });
@@ -68,7 +68,7 @@ const deleteArticle = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     try {
         const deletedArticle = yield articleModel_1.default.findByIdAndDelete(id);
         if (deletedArticle) {
-            return res.status(200).json({ message: "Article found and successfully deleted", deletedArticle });
+            return res.status(200).json({ message: "Article found and successfully deleted", data: deletedArticle });
         }
         else {
             return res.status(404).json({ message: "Article not found or invalid message ID and not deleted" });
