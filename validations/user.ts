@@ -26,6 +26,6 @@ export const validateLogin = async (req: Request, res: Response, next: NextFunct
         req.body = await loginSchem.validateAsync(req.body, {abortEarly: false});
         return next();
     } catch (error: any) {
-        return res.status(400).json({error: error.message})
+        return res.status(400).json({message: error.message})
     }
 }

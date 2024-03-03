@@ -8,7 +8,7 @@ const createArticle = async (req:Request, res:Response) => {
       const saved = await newArticle.save();
       return res.status(201).json(
         {status: "success",
-      date: saved});
+      Article: saved});
     } catch (error) {
         console.log(error);
       return res.status(500).json({ message: "Internal server error" });
@@ -20,7 +20,7 @@ const createArticle = async (req:Request, res:Response) => {
     try {
       const allArticles = await Article.find();
       if (allArticles.length > 0) {
-        return res.status(200).json({ststus: "success", data: allArticles});
+        return res.status(200).json({ststus: "success", articles: allArticles});
       } else {
         return res.status(404).json({ message: "No article found" });
       }

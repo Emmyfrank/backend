@@ -20,7 +20,7 @@ const createArticle = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         const newArticle = new articleModel_1.default(Object.assign({}, req.body));
         const saved = yield newArticle.save();
         return res.status(201).json({ status: "success",
-            date: saved });
+            Article: saved });
     }
     catch (error) {
         console.log(error);
@@ -32,7 +32,7 @@ const getAllArticles = (req, res) => __awaiter(void 0, void 0, void 0, function*
     try {
         const allArticles = yield articleModel_1.default.find();
         if (allArticles.length > 0) {
-            return res.status(200).json({ ststus: "success", data: allArticles });
+            return res.status(200).json({ ststus: "success", articles: allArticles });
         }
         else {
             return res.status(404).json({ message: "No article found" });

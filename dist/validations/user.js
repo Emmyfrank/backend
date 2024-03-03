@@ -42,7 +42,7 @@ const validateLogin = (req, res, next) => __awaiter(void 0, void 0, void 0, func
         return next();
     }
     catch (error) {
-        return res.status(400).json({ error: error.message });
+        return res.status(400).json({ message: error.message });
     }
 });
 exports.validateLogin = validateLogin;

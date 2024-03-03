@@ -12,6 +12,6 @@ export default async function validateMessage(req: Request, res: Response, next:
         req.body = await messageSchem.validateAsync(req.body, {abortEarly: false});
         return next();
     } catch (error: any) {
-        return res.status(400).json({error: error.message})
+        return res.status(400).json({message: error.message})
     }
 }
