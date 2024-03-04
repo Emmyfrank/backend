@@ -13,12 +13,15 @@ const options = {
     description: "My backend api documentation",
   },
   servers: [
-    {
-      url: host,
-    },
+
     {
       url: "https://backend-ctov.onrender.com/",
     },
+    {
+      
+      url: host,
+    },
+    
 
   ],
   basePath: "/",

@@ -18,10 +18,10 @@ const options = {
     },
     servers: [
         {
-            url: host,
+            url: "https://backend-ctov.onrender.com/",
         },
         {
-            url: "https://backend-ctov.onrender.com/",
+            url: host,
         },
     ],
     basePath: "/",
