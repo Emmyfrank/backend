@@ -12,7 +12,7 @@ const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWQ4YTBhYzQw
 describe("Test create article", () => {
 
   test("Test bad data submitted", async () => {
-    jest.spyOn(User, "findById").mockResolvedValueOnce({ name: "test", email: "test@example.com", password: "testpassword", _id: "Some_user_id"});
+    jest.spyOn(User, "findById").mockResolvedValueOnce({ name: "test", email: "test@example.com", password: "testpassword", _id: "Some_user_id", role: "admin" });
     const article = await request(app).post("/api/v1/articles").send({
         name: "name",
         email: "email@gmail.com",
@@ -21,7 +21,7 @@ describe("Test create article", () => {
     expect(article.status).toBe(400);
 });
 test("test success", async () => {
-    jest.spyOn(User, "findById").mockResolvedValueOnce({ name: "test", email: "test@example.com", password: "testpassword", _id: "Some_user_id"});
+    jest.spyOn(User, "findById").mockResolvedValueOnce({ name: "test", email: "test@example.com", password: "testpassword", _id: "Some_user_id", role: "admin" });
     jest.spyOn(Article.prototype, "save").mockResolvedValueOnce(createdArticle);
     const article = await request(app).post("/api/v1/articles").send({
       title: "Article title",
@@ -32,7 +32,7 @@ test("test success", async () => {
   });
 
   test("Test sever error", async () => {
-    jest.spyOn(User, "findById").mockResolvedValueOnce({ name: "test", email: "test@example.com", password: "testpassword", _id: "Some_user_id"});
+    jest.spyOn(User, "findById").mockResolvedValueOnce({ name: "test", email: "test@example.com", password: "testpassword", _id: "Some_user_id", role: "admin" });
     jest.spyOn(Article.prototype, "save").mockRejectedValueOnce(new Error("Server error"));
     const article = await request(app).post("/api/v1/articles").send({
         title: "Article title",

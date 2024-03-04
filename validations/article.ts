@@ -15,3 +15,18 @@ export default async function validateArticle(req: Request, res: Response, next:
         return res.status(400).json({error: error.message})
     }
 }
+
+const updateArticleSchem = Joi.object({
+    title: Joi.string().optional(),
+    image: Joi.string().optional(),
+    description: Joi.string().optional(),
+}).min(1);
+
+export const validateUpdateArticle = async (req: Request, res: Response, next: NextFunction) =>{
+    try {
+        req.body = await updateArticleSchem.validateAsync(req.body, {abortEarly: false});
+        return next();
+    } catch (error: any) {
+        return res.status(400).json({error: error.message})
+    }
+}
