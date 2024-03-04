@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import User from '../model/userModel';
 import jwt from 'jsonwebtoken';
+import bcrypt from 'bcrypt';
 
 // get all users controller
 export const getAllUsers = async (req:Request, res:Response) => {
@@ -28,8 +29,13 @@ export const getAllUsers = async (req:Request, res:Response) => {
       if (existingUser) {
         return res.status(409).json({ message: "Email already taken" });
       }
+      const existingUsername = await User.findOne({ username });
+      if (existingUsername) {
+        return res.status(409).json({ message: "username is taken" });
+      }
+      const hashedPassword = await bcrypt.hash(password, Number(process.env.SALT_NUMBER));
   
-      const newUser = new User({ password, email, username, name });
+      const newUser = new User({ password: hashedPassword, email, username, name });
       const user = await newUser.save();
       return res.status(201).json(user);
     } catch (error) {
@@ -79,8 +85,10 @@ export const getAllUsers = async (req:Request, res:Response) => {
         if (!user) {
           return res.status(404).json({ message: "User not found" });
         }
+
+        const isPasswordCorrect = bcrypt.compareSync(password, user.password);
     
-        if (user.password !== password) {
+        if (!isPasswordCorrect) {
           return res.status(401).json({ message: "Invalid password" });
         }
     
@@ -91,4 +99,21 @@ export const getAllUsers = async (req:Request, res:Response) => {
         console.log(error);
         res.status(500).json({ message: "Internal server error",error:`${error}`});
       }
+    };
+
+    export const assignRoleToUser = async (req: Request, res: Response) => {
+      try {
+        const { role, userId } = req.body;
+        const user = await User.findById(userId);
+        if (!user) {
+          return res.status(404).json({ message: "User not found or invalid user ID" });
+        }
+        user.role = role;
+        const updatedUser = await user.save();
+
+      return res.status(200).json({ message: "user updated successfully", user: updatedUser });
+      } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: "Internal server error", error:`${error}`});
+      }  
     };

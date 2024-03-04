@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import Joi from "joi";
 
 const commentSchem = Joi.object({
-    name: Joi.string().required(),
+    articleId: Joi.string().required(),
     comment: Joi.string().required(),
 })
 

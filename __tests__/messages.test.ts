@@ -54,19 +54,19 @@ describe("Test get single message", ()=>{
 
 describe("Test get all messages", ()=>{
     test('Test no messages found', async () => {
-        jest.spyOn(User, "findById").mockResolvedValueOnce({ name: "test", email: "test@example.com", password: "testpassword", _id: "Some_user_id"});
+        jest.spyOn(User, "findById").mockResolvedValueOnce({ name: "test", email: "test@example.com", password: "testpassword", _id: "Some_user_id", role: "admin"});
         jest.spyOn(Mess, "find").mockResolvedValueOnce([]);
         const messages = await request(app).get("/api/v1/messages").set({"Authorization": `Bearer ${token}`});
         expect(messages.status).toBe(404);
     })
     test('Test get messages success', async () => {
-        jest.spyOn(User, "findById").mockResolvedValueOnce({ name: "test", email: "test@example.com", password: "testpassword", _id: "Some_user_id"});
+        jest.spyOn(User, "findById").mockResolvedValueOnce({ name: "test", email: "test@example.com", password: "testpassword", _id: "Some_user_id", role: "admin"});
         jest.spyOn(Mess, "find").mockResolvedValueOnce([createdMessage]);
         const messages = await request(app).get("/api/v1/messages").set({"Authorization": `Bearer ${token}`});
         expect(messages.status).toBe(200);
     })
     test('Test server error', async () => {
-        jest.spyOn(User, "findById").mockResolvedValueOnce({ name: "test", email: "test@example.com", password: "testpassword", _id: "Some_user_id"});
+        jest.spyOn(User, "findById").mockResolvedValueOnce({ name: "test", email: "test@example.com", password: "testpassword", _id: "Some_user_id", role: "admin"});
         jest.spyOn(Mess, "find").mockRejectedValueOnce(new Error("Server error"));
         const messages = await request(app).get("/api/v1/messages").set({"Authorization": `Bearer ${token}`});
         expect(messages.status).toBe(500);

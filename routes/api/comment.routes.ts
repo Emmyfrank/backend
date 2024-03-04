@@ -10,7 +10,7 @@ import validateComment from "../../validations/comment";
 const commentRouter = Router();
 
 // a route to create a comment via endpoint api/v1/comments
-commentRouter.post("/", validateComment, createComment);
+commentRouter.post("/", isLoggedIn, validateComment, createComment);
 
 // Get all comment via endpoint api/v1/comments
 commentRouter.get("/", getAllComments);

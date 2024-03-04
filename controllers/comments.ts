@@ -1,14 +1,26 @@
 import { Request, Response } from 'express';
 import { Comment } from '../model/commentModel';
+import Article from '../model/articleModel';
 
 // controller to create comment
 const createComment = async (req:Request, res:Response) => {
     try {
-      const newComment = new Comment({ ...req.body });
-      await newComment.save();
-      return res.status(201).json(
-        {status: "success",
-      date: newComment});
+      const { comment, articleId } = req.body;
+      const exist = await Article.findById(articleId);
+    if (!exist) {
+      return res.status(404).json({ error: "Article not found!" });
+    }    
+      const newComment = new Comment({
+        comment,
+        article: articleId,
+        user: req.user._id,
+       });
+      const savedComment = await newComment.save();
+      await Article.updateOne({_id: exist._id}, { $push: { comments: savedComment._id } }, {new: true});
+      return res.status(201).json({
+      status: "success",
+      comment: savedComment,
+    });
     } catch (error) {
         console.log(error);
       return res.status(500).json({ message: "Internal server error" });

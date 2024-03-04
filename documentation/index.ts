@@ -144,6 +144,39 @@ const options = {
         },
       },
     },
+    "/api/v1/users/assign-role": {
+      patch: {
+        tags: ["User"],
+        description: "Assign role to user",
+        requestBody: {
+          required: true,
+          content: {
+            "application/json": {
+              schema: {
+                $ref: "#/components/schemas/AssignRole",
+              },
+            },
+          },
+        },
+        responses: {
+          200: {
+            description: "successfully",
+          },
+          400: {
+            description: "Bad request",
+          },
+          401: {
+            description: "Unauthorized",
+          },
+          403: {
+            description: "Forbidden",
+          },
+          500: {
+            description: "Server error",
+          },
+        },
+      },
+    },
     "/api/v1/comments": {
       get: {
         tags: ["Comments"],
@@ -375,6 +408,65 @@ const options = {
           401: {
             description: "Unauthorized",
           },
+          403: {
+            description: "Not admin",
+          },
+          404: {
+            description: "Not found",
+          },
+          500: {
+            description: "Server error",
+          },
+        },
+      },
+      patch: {
+        tags: ["Articles"],
+        description: "Update/Edit an article",
+        parameters: [{ in: "path", name: "id", required: true }],
+        requestBody: {
+          required: true,
+          content: {
+            "application/json": {
+              schema: {
+                $ref: "#/components/schemas/UpdateArticle",
+              },
+            },
+          },
+        },
+        responses: {
+          200: {
+            description: "successfully",
+          },
+          401: {
+            description: "Unauthorized",
+          },
+          403: {
+            description: "Not admin",
+          },
+          404: {
+            description: "Not found",
+          },
+          500: {
+            description: "Server error",
+          },
+        },
+      },
+    },
+    "/api/v1/articles/{articleId}": {
+      post: {
+        tags: ["Likes"],
+        description: "Like/dislike an article",
+        parameters: [{ in: "path", name: "articleId", required: true }],
+        responses: {
+          200: {
+            description: "successfully",
+          },
+          401: {
+            description: "Unauthorized",
+          },
+          403: {
+            description: "Not admin",
+          },
           404: {
             description: "Not found",
           },
@@ -450,10 +542,10 @@ const options = {
       Comment: {
         type: "object",
         properties: {
-          name: {
+          articleId: {
             type: "string",
             required: true,
-            description: "Name of user",
+            description: "Id of the article",
           },
           comment: {
             type: "string",
@@ -462,7 +554,7 @@ const options = {
           }, 
         },
         example: {
-          name: "Jane Doe",
+          articleId: "65e4de4844eda5bed01446bc",
           comment: "I like it",
         },
       },
@@ -515,6 +607,50 @@ const options = {
           description: "article description",
           image: "https://buffer.com/cdn-cgi",
         },
+      },
+      UpdateArticle: {
+        type: "object",
+        properties: {
+          title: {
+            type: "string",
+            required: false,
+            description: "Title of of the article",
+          },
+          description: {
+            type: "string",
+            required: false,
+            description: "Description of the article",
+          }, 
+          image: {
+            type: "string",
+            required: false,
+            description: "Hosted image url",
+          }, 
+        },
+        example: {
+          title: "Jane Doe",
+          description: "article description",
+          image: "https://buffer.com/cdn-cgi",
+        },
+      },
+      AssignRole: {
+        type: "object",
+        properties: {
+          userId: {
+            type: "string",
+            required: true,
+            description: "User id",
+          },
+          role: {
+            type: "string",
+            required: true,
+            description: "The role to assign to the user",
+          }, 
+        },
+        // example: {
+        //   description: "article description",
+        //   image: "https://buffer.com/cdn-cgi",
+        // },
       },
     },
   },
