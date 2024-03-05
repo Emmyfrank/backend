@@ -31,8 +31,10 @@ const createComment = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         const savedComment = yield newComment.save();
         yield articleModel_1.default.updateOne({ _id: exist._id }, { $push: { comments: savedComment._id } }, { new: true });
         const createdComment = yield commentModel_1.Comment.findById(savedComment._id).populate({ path: "user" });
+        const commentCounter = yield commentModel_1.Comment.countDocuments({ article: articleId });
         return res.status(201).json({
             status: "success",
+            commentCounter,
             comment: createdComment,
         });
     }

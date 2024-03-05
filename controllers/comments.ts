@@ -18,8 +18,10 @@ const createComment = async (req:Request, res:Response) => {
       const savedComment = await newComment.save()
       await Article.updateOne({_id: exist._id}, { $push: { comments: savedComment._id } }, {new: true});
       const createdComment = await Comment.findById(savedComment._id).populate({path:"user"})
+      const commentCounter = await Comment.countDocuments({article:articleId})
       return res.status(201).json({
       status: "success",
+      commentCounter,
       comment: createdComment,
     });
     } catch (error) {
