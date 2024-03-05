@@ -3,7 +3,6 @@ import Joi from "joi";
 
 const articleSchem = Joi.object({
     title: Joi.string().required(),
-    image: Joi.string().required(),
     description: Joi.string().required(),
 })
 
@@ -18,7 +17,6 @@ export default async function validateArticle(req: Request, res: Response, next:
 
 const updateArticleSchem = Joi.object({
     title: Joi.string().optional(),
-    image: Joi.string().optional(),
     description: Joi.string().optional(),
 }).min(1);
 

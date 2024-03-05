@@ -360,7 +360,7 @@ const options = {
         requestBody: {
           required: true,
           content: {
-            "application/json": {
+            "multipart/form-data": {
               schema: {
                 $ref: "#/components/schemas/Article",
               },
@@ -429,7 +429,7 @@ const options = {
         requestBody: {
           required: true,
           content: {
-            "application/json": {
+            "multipart/form-data": {
               schema: {
                 $ref: "#/components/schemas/UpdateArticle",
               },
@@ -602,13 +602,14 @@ const options = {
           image: {
             type: "string",
             required: true,
-            description: "Hosted image url",
+            description: "Upload an image",
+            format: "binary",
           }, 
         },
         example: {
           name: "Jane Doe",
           description: "article description",
-          image: "https://buffer.com/cdn-cgi",
+          // image: "https://buffer.com/cdn-cgi",
         },
       },
       UpdateArticle: {
@@ -627,13 +628,14 @@ const options = {
           image: {
             type: "string",
             required: false,
-            description: "Hosted image url",
+            description: "Upload an image",
+            format: "binary",
           }, 
         },
         example: {
           title: "Jane Doe",
           description: "article description",
-          image: "https://buffer.com/cdn-cgi",
+          // image: "https://buffer.com/cdn-cgi",
         },
       },
       AssignRole: {

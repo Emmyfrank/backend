@@ -1,11 +1,30 @@
 import { Request, Response } from 'express';
 import Article from '../model/articleModel';
 import Like from '../model/likeModel';
+import { v2 as cloudinary} from "cloudinary";
+import 'dotenv/config';
+
+cloudinary.config({
+    cloud_name: process.env.CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
+  });
 
 // controller to create an article
 const createArticle = async (req:Request, res:Response) => {
     try {
-      const newArticle = new Article({ ...req.body });
+      if(!req.file){
+        return res.status(400).json({ message: "Please upload the image" });
+      }
+      const uploadedImage = await cloudinary.uploader.upload(req.file.path, {
+        folder: "images",
+      });
+      const { title, description } = req.body;
+      const newArticle = new Article({
+        title,
+        description,
+        image: uploadedImage.secure_url,
+      });
       const saved = await newArticle.save();
       return res.status(201).json(
         {status: "success",
@@ -35,7 +54,7 @@ const createArticle = async (req:Request, res:Response) => {
   export const getSingleArticle = async (req:Request, res:Response) => {
     const { id } = req.params;
     try {
-        const article = await Article.findById(id);
+        const article = await Article.findById(id).populate({path: "comments", populate: { path: "user" }});
         if (article) {
         return res.status(200).json({ message: "Article found",  deta:article });
         } else {
@@ -65,7 +84,7 @@ const createArticle = async (req:Request, res:Response) => {
   export const updateArticle = async (req:Request, res:Response) => {
         try {
           const { id } = req.params;
-          const { title, description, image } = req.body;
+          const { title, description } = req.body;
           const article = await Article.findById(id);
           if (!article) return res.status(404).json({ message: "Article not found or invalid message ID and not deleted" });
           if(title){
@@ -74,13 +93,17 @@ const createArticle = async (req:Request, res:Response) => {
           if(description){
             article.description = description;
           }
-          if(image){
-            article.image = image;
+          if(req.file){
+            const uploadedImage = await cloudinary.uploader.upload(req.file.path, {
+              folder: "images",
+            });
+            article.image = uploadedImage.secure_url;
           }
-          const updateArticle = await article.save();
+          await article.save();
+          const articleWithComments = await Article.findById(id).populate({path: "comments", populate: { path: "user" }});
           return res.status(200).json(
             {status: "success",
-          Article: updateArticle});
+          Article: articleWithComments});
         } catch (error) {
             console.log(error);
           return res.status(500).json({ message: "Internal server error" });
@@ -96,7 +119,7 @@ export const likeOrDislike = async (req:Request, res:Response) => {
   if (!existArticle) {
     return res.status(404).json({ error: "Article not found!" });
   }
-  const existLike = await Like.findOne({ Article: articleId, user: userId  });
+  const existLike = await Like.findOne({ article: articleId, user: userId  });
   if(!existLike){
     const like = new Like({
       article: articleId,
